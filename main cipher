@@ -1,0 +1,57 @@
+def user_preferences():
+    user_limitations = [
+        "You can't use numbers or other irregular symbols.",
+        "You have to know how many shifts are being used.",
+        "All the letters in the word have to have the same amount of shifts."
+    ]
+    print("Welcome to my Caesar cipher decoder! Here are the rules:")
+    for i, rule in enumerate(user_limitations, start=1):
+        print(f"{i}. {rule}")
+
+    problems = input("Do you have any problems with the following limitations? (yes/no): ").lower()
+    if problems == "yes":
+        try:
+            problem_identify = int(input("Which one do you have a problem with? 1, 2, or 3: "))
+            if 1 <= problem_identify <= 3:
+                print(f"You disagree with: {user_limitations[problem_identify - 1]}")
+                if problem_identify == 1:
+                    print("Caesar cipher works only with letters, as it shifts letters, not numbers or symbols.")
+                elif problem_identify == 2:
+                    print("We can't guess the number of shifts you're using. Please provide that information.")
+                elif problem_identify == 3:
+                    print("The shift amount must be uniform for all letters.")
+            else:
+                print("Invalid choice. We'll just move on.")
+        except ValueError:
+            print("Please enter a valid number. We'll move on.")
+    elif problems == "no":
+        print("That's great! Let's decode your word now.")
+    else:
+        print("We don't understand your response. We'll just move on.")
+
+def encrypted_word(unchangedword, n):
+    ans = ""
+    for char in unchangedword:
+        if char == " ":
+            ans += " "
+        elif char.isupper():
+            ans += chr((ord(char) - 65 + n) % 26 + 65)
+        elif char.islower():
+            ans += chr((ord(char) - 97 + n) % 26 + 97)
+        else:
+            ans += char  # Retain non-alphabetic characters
+    return ans
+
+def main():
+    user_preferences()
+    unchangedword = input("What's the word that you want to encrypt: ")
+    try:
+        n = int(input("What is the number of shifts you want: "))
+        print(f"The word you gave is: {unchangedword}")
+        print(f"How many shifts you used is: {n}")
+        print(f"The encrypted text is: {encrypted_word(unchangedword, n)}")
+    except ValueError:
+        print("Invalid shift value. Please enter a number.")
+
+if __name__ == "__main__":
+    main()
